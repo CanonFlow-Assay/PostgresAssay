@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "product": "postgresql",
+  "version": "18.7",
+  "settings": {
+    "fsync": "on",
+    "full_page_writes": "on",
+    "autovacuum": "on",
+    "ssl": "on",
+    "password_encryption": "scram-sha-256"
+  },
+  "applicationSettings": {
+    "statement_timeout_ms": 5000,
+    "idle_in_transaction_session_timeout_ms": 10000,
+    "lock_timeout_ms": 1000
+  },
+  "appRoles": [
+    {
+      "rolname": "app",
+      "rolsuper": false,
+      "rolbypassrls": false,
+      "rolreplication": false
+    }
+  ],
+  "hba": [
+    {
+      "type": "hostssl",
+      "auth_method": "scram-sha-256"
+    }
+  ]
+}

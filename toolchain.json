@@ -1,0 +1,7 @@
+{
+  "python": "3.12",
+  "runtimeDependencies": [],
+  "qualifiedEngineVersion": "18.7",
+  "releaseSource": "https://www.postgresql.org/",
+  "reviewedAt": "2026-11-16"
+}

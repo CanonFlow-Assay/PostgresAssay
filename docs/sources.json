@@ -1,0 +1,97 @@
+{
+  "reviewedAt": "2026-11-16",
+  "productVersion": "18.7",
+  "sources": [
+    {
+      "id": "PG-WAL",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/runtime-config-wal.html",
+      "decision": "Durability settings and explicit disposable-data exceptions."
+    },
+    {
+      "id": "PG-AUTH",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/auth-pg-hba-conf.html",
+      "decision": "Authentication rules are ordered; HBA snapshots do not prove TLS identity or actual matching."
+    },
+    {
+      "id": "PG-ROLES",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/role-attributes.html",
+      "decision": "Application role privilege boundaries."
+    },
+    {
+      "id": "PG-TIMEOUT",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/runtime-config-client.html",
+      "decision": "Timeouts are workload/session scoped, not arbitrary global constants."
+    },
+    {
+      "id": "PG-VACUUM",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/routine-vacuuming.html",
+      "decision": "Autovacuum and maintenance require workload evidence."
+    },
+    {
+      "id": "PG-DUMP",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/app-pgdump.html",
+      "decision": "Logical dumps are a supported backup mechanism; recovery objectives determine adequacy."
+    },
+    {
+      "id": "PG-REDDIT",
+      "kind": "community",
+      "url": "https://www.reddit.com/r/PostgreSQL/comments/1h0zt4u/postgresql_best_practices_guidelines/",
+      "decision": "Backup/restore and maintenance concerns accepted; blanket claims that pg_dump is not a backup and VACUUM FULL is never valid rejected."
+    },
+    {
+      "id": "PG-MEDIUM",
+      "kind": "community",
+      "url": "https://medium.com/towards-data-engineering/postgresql-in-production-scaling-high-availability-and-lessons-from-real-failures-4c307d0afeea",
+      "decision": "Pooling, replication lag and failover inspire contextual tests; no fixed pool size or universal partitioning rule."
+    },
+    {
+      "id": "PG-MIGRATION",
+      "kind": "community",
+      "url": "https://medium.com/engineering-playbook/our-database-migration-took-200ms-in-staging-production-went-down-for-47-minutes-e000ad7cf414",
+      "decision": "Lock timing and overlapping application versions motivate migration/recovery tests; anecdote is not an admitted rule."
+    },
+    {
+      "id": "PG-SUBSTACK-MIGRATION",
+      "kind": "community",
+      "url": "https://segfaultpw.substack.com/p/devops-from-zero-to-hero-database-migrations",
+      "decision": "Expand/contract and representative migration testing accepted as contextual workflows. Claims that additive DDL is always safe or concurrent indexes take no locks are rejected."
+    },
+    {
+      "id": "PG-SUBSTACK-POOL",
+      "kind": "community",
+      "url": "https://engrlog.substack.com/p/what-happens-when-thousands-of-users",
+      "decision": "Pool saturation/connection ownership inspires load cases. Fixed pool ratios and blanket prepared-statement incompatibility are not admitted."
+    },
+    {
+      "id": "PG-POOLER",
+      "kind": "primary",
+      "url": "https://www.pgbouncer.org/config.html",
+      "decision": "Check pooler/protocol version, pooling mode, reset semantics and max_prepared_statements rather than universally disabling prepared statements."
+    },
+    {
+      "id": "PG-LOCK-BLOG",
+      "kind": "specialist",
+      "url": "https://www.crunchydata.com/blog/one-pid-to-lock-them-all-finding-the-source-of-the-lock-in-postgres",
+      "decision": "Lock-chain diagnosis informs operator workflow. Example timeout values are not imported as universal global settings."
+    },
+    {
+      "id": "PG-INDEX",
+      "kind": "primary",
+      "url": "https://www.postgresql.org/docs/18/sql-createindex.html",
+      "decision": "Concurrent index construction still has waits/constraints and cannot run inside a transaction block."
+    }
+  ],
+  "searchCoverage": [
+    "Official versioned documentation",
+    "Reddit",
+    "Medium",
+    "Substack",
+    "Engine authors and specialist engineering blogs"
+  ]
+}

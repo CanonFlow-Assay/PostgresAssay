@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "status": "Pass",
+  "python": "3.12.3",
+  "commands": [
+    {
+      "name": "unit",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exitCode": 0,
+      "expectedExitCodes": [
+        0
+      ],
+      "logSha256": "d477c99b31aebf496933a79b29f2d4a5cfd06d6921d1cd1aae73b591592f5211",
+      "passed": true
+    },
+    {
+      "name": "package",
+      "argv": [
+        "python3",
+        "eng/package.py"
+      ],
+      "exitCode": 0,
+      "expectedExitCodes": [
+        0
+      ],
+      "logSha256": "7722de2e49230619210614dc55e63ad93a79d9370c4fedbe35ec3cf6c7c77edf",
+      "passed": true
+    },
+    {
+      "name": "native",
+      "argv": [
+        "python3",
+        "eng/native_smoke.py"
+      ],
+      "exitCode": 0,
+      "expectedExitCodes": [
+        0
+      ],
+      "logSha256": "561c807543f2caefdf70eb3db4b3b55dc81b6e42539e1d781632fc5fdbb50338",
+      "passed": true
+    },
+    {
+      "name": "native-assessment",
+      "argv": [
+        "python3",
+        "/home/arun/Developer/CanonFlow-Assay/PostgresAssay/artifacts/postgres_assay.pyz",
+        "verify",
+        "/home/arun/Developer/CanonFlow-Assay/PostgresAssay/artifacts/native-snapshot.json",
+        "--policy",
+        "/home/arun/Developer/CanonFlow-Assay/PostgresAssay/artifacts/native-policy.json",
+        "--out",
+        "/home/arun/Developer/CanonFlow-Assay/PostgresAssay/artifacts/native-receipt.json"
+      ],
+      "exitCode": 1,
+      "expectedExitCodes": [
+        1
+      ],
+      "logSha256": "03056de25c34fdfd3e83ccf6727809f4c9a5cbc37682c69598112662672f8425",
+      "passed": true
+    }
+  ],
+  "native": {
+    "status": "Pass",
+    "engineVersion": "18.7 (Debian 18.7-1.pgdg13+2)",
+    "imageDigests": [
+      "postgres@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc"
+    ],
+    "cases": [
+      "exact engine version",
+      "valid constrained insert",
+      "constraint rejects invalid quantity",
+      "rollback retains prior state",
+      "exact decimal arithmetic",
+      "NULL remains distinct",
+      "ungranted application role denied",
+      "logical dump restored into independent database"
+    ],
+    "expectedSnapshotVerdict": "Fail",
+    "limits": "Disposable local trust/no-TLS fixture is deliberately not production compliant. Restore is a tiny logical-backup demonstration, not PITR/HA qualification.",
+    "snapshotSha256": "0aeea15121644f9edf7ffbd03fbb06d1fa6898cdbf24fad70194e857ba691eac"
+  },
+  "sourceFiles": {
+    "src/postgres_assay/__init__.py": "4ed3b28037abdcdc27304e8b8b6c95d8bdca5ade7101b838d8a69220db4441a1",
+    "src/postgres_assay/__main__.py": "a20f87cc7f83ce9372a55db6c20956add35fe6622e82739ef8c54b8ac03241ef",
+    "src/postgres_assay/catalogue.json": "8c3d9c57d6ac3417a664febc64dc05566faa078162facd8ad978be468c449597",
+    "src/postgres_assay/engine.py": "1e4bd99af8039351fd8bce8009aff4f10bedd9a61701f25b7652aa4675402828",
+    "tests/test_engine.py": "688c9bd29ff737f5fc7b335e9482dfb20fdf10255593e4bd9a2091888a71f613",
+    "eng/native_common.py": "24d6b38a539ff2d8a43e3335111169bbf8559396122f70c01ee9cbc9501a21dd",
+    "eng/native_smoke.py": "0938cc6c47f93d0561b0fee7d0dc73aa6ee5b8ad074e076fc680e2dcd2ec560d",
+    "eng/package.py": "86ed6231f34e74f7931a8cadece2a9ea0bdddcf368b7a7a4b94b863830c3d4fc",
+    "eng/qualify.py": "55a881f2912246c4fa0530159966d7e3930f90aede6abe6a7b36d1a177e46b01"
+  },
+  "scope": "Local unit/qualification cases and optional disposable native engine; not production deployment certification.",
+  "unitCases": {
+    "run": 42,
+    "passed": 42,
+    "skipped": 0,
+    "failures": 0
+  }
+}

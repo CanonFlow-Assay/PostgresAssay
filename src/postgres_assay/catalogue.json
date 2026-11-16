@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "assay": "PostgresAssay",
+  "product": "postgresql",
+  "engineVersion": "18.7",
+  "reviewDate": "2026-11-16",
+  "profiles": [
+    "production"
+  ],
+  "rules": [
+    {
+      "id": "PG001",
+      "title": "Durability profile requires fsync",
+      "path": "/settings/fsync",
+      "kind": "enum",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-WAL",
+      "allowed": [
+        "on"
+      ]
+    },
+    {
+      "id": "PG002",
+      "title": "Durability profile requires full-page writes",
+      "path": "/settings/full_page_writes",
+      "kind": "enum",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-WAL",
+      "allowed": [
+        "on"
+      ]
+    },
+    {
+      "id": "PG003",
+      "title": "Production maintenance profile keeps autovacuum enabled",
+      "path": "/settings/autovacuum",
+      "kind": "enum",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-VACUUM",
+      "allowed": [
+        "on"
+      ]
+    },
+    {
+      "id": "PG004",
+      "title": "Network production profile enables server TLS",
+      "path": "/settings/ssl",
+      "kind": "enum",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-AUTH",
+      "allowed": [
+        "on"
+      ]
+    },
+    {
+      "id": "PG005",
+      "title": "SCRAM credential provisioning profile",
+      "path": "/settings/password_encryption",
+      "kind": "enum",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-AUTH",
+      "allowed": [
+        "scram-sha-256"
+      ]
+    },
+    {
+      "id": "PG006",
+      "title": "Scoped application roles do not grant rolsuper",
+      "path": "/appRoles",
+      "kind": "each",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-ROLES",
+      "field": "/rolsuper",
+      "test": {
+        "kind": "boolean",
+        "expected": false
+      }
+    },
+    {
+      "id": "PG007",
+      "title": "Scoped application roles do not grant rolbypassrls",
+      "path": "/appRoles",
+      "kind": "each",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-ROLES",
+      "field": "/rolbypassrls",
+      "test": {
+        "kind": "boolean",
+        "expected": false
+      }
+    },
+    {
+      "id": "PG008",
+      "title": "Scoped application roles do not grant rolreplication",
+      "path": "/appRoles",
+      "kind": "each",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-ROLES",
+      "field": "/rolreplication",
+      "test": {
+        "kind": "boolean",
+        "expected": false
+      }
+    },
+    {
+      "id": "PG009",
+      "title": "SCRAM profile excludes trust/password/MD5 HBA authentication",
+      "path": "/hba",
+      "kind": "each",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-AUTH",
+      "field": "/auth_method",
+      "test": {
+        "kind": "enum",
+        "allowed": [
+          "scram-sha-256",
+          "cert",
+          "peer",
+          "reject"
+        ]
+      }
+    },
+    {
+      "id": "PG010",
+      "title": "Bounded application profile declares positive statement_timeout_ms",
+      "path": "/applicationSettings/statement_timeout_ms",
+      "kind": "integer",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-TIMEOUT",
+      "min": 1
+    },
+    {
+      "id": "PG011",
+      "title": "Bounded application profile declares positive idle_in_transaction_session_timeout_ms",
+      "path": "/applicationSettings/idle_in_transaction_session_timeout_ms",
+      "kind": "integer",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-TIMEOUT",
+      "min": 1
+    },
+    {
+      "id": "PG012",
+      "title": "Bounded application profile declares positive lock_timeout_ms",
+      "path": "/applicationSettings/lock_timeout_ms",
+      "kind": "integer",
+      "severity": "blocking",
+      "admission": "bounded-snapshot-profile",
+      "profiles": [
+        "production"
+      ],
+      "source": "PG-TIMEOUT",
+      "min": 1
+    }
+  ]
+}
