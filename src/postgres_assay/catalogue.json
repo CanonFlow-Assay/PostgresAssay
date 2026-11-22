@@ -5,7 +5,8 @@
   "engineVersion": "18.7",
   "reviewDate": "2026-11-16",
   "profiles": [
-    "production"
+    "production",
+    "wallet-migration"
   ],
   "rules": [
     {
@@ -194,6 +195,84 @@
       ],
       "source": "PG-TIMEOUT",
       "min": 1
+    },
+    {
+      "id": "PGM001",
+      "title": "Populated wallet, operation and outbox rows survive the upgrade",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "preserved",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-QUERY"
+    },
+    {
+      "id": "PGM002",
+      "title": "Flyway ledger contains each expected successful migration once",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "history",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-FLYWAY"
+    },
+    {
+      "id": "PGM003",
+      "title": "Flyway validates migration files against applied checksums",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "validate",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-FLYWAY"
+    },
+    {
+      "id": "PGM004",
+      "title": "The upgraded schema contains the expected index definition",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "index",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-QUERY"
+    },
+    {
+      "id": "PGM005",
+      "title": "An interrupted worker is reconciled without redispatch",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "recovered",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-FLYWAY"
+    },
+    {
+      "id": "PGM006",
+      "title": "Flyway's JSON rejects an edited versioned migration",
+      "path": "/migration",
+      "kind": "profile",
+      "predicate": "checksum-control",
+      "severity": "blocking",
+      "admission": "bounded-native-profile",
+      "profiles": [
+        "wallet-migration"
+      ],
+      "source": "PG-ASSAY-FLYWAY"
     }
   ]
 }

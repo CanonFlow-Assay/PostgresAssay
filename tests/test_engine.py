@@ -48,6 +48,7 @@ class AuditTests(unittest.TestCase):
         for profile in CAT['profiles']:
             for rule in CAT['rules']:
                 if profile not in rule['profiles']:continue
+                if rule['kind'] == 'profile': continue  # Profile controls are exercised in test_profile.py.
                 document=copy.deepcopy(self.sample)
                 target=document
                 parts=rule['path'].strip('/').split('/')

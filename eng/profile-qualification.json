@@ -1,0 +1,14 @@
+{
+  "profile": "wallet-migration",
+  "package": "postgres_assay",
+  "files": [
+    "eng/native_smoke.py",
+    "eng/native_common.py",
+    "eng/migration_native.py",
+    "examples/wallet-migration/V1__wallet.sql",
+    "examples/wallet-migration/V2__index_wallet_operations.sql"
+  ],
+  "arguments": ["--sources", "wallet-migration"],
+  "assertion": "checksumControl",
+  "controls": {}
+}

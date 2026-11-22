@@ -85,6 +85,20 @@
       "kind": "primary",
       "url": "https://www.postgresql.org/docs/18/sql-createindex.html",
       "decision": "Concurrent index construction still has waits/constraints and cannot run inside a transaction block."
+    },
+    {
+      "id": "PG-ASSAY-FLYWAY",
+      "kind": "primary",
+      "title": "Flyway schema history table",
+      "url": "https://documentation.red-gate.com/flyway/flyway-concepts/migrations/flyway-schema-history-table",
+      "uses": "Native profile behavior and interpretation"
+    },
+    {
+      "id": "PG-ASSAY-QUERY",
+      "kind": "primary",
+      "title": "PostgreSQL information functions",
+      "url": "https://www.postgresql.org/docs/18/functions-info.html",
+      "uses": "Native profile behavior and interpretation"
     }
   ],
   "searchCoverage": [

@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 def run():
     cases=[]
     with container(IMAGE,['--env','POSTGRES_HOST_AUTH_METHOD=trust']) as (name,identity):
-        def sql(text):return call(['docker','exec','-i',name,'psql','-X','-U','postgres','-v','ON_ERROR_STOP=1','-tA'],text).strip()
+        def sql(text):return call(['docker','exec','-i',name,'psql','-X','-h','127.0.0.1','-U','postgres','-v','ON_ERROR_STOP=1','-tA'],text).strip()
         ready(lambda:sql('SELECT 1;'))
         version=sql("SELECT current_setting('server_version');")
         assert version.split()[0]=='18.7';cases.append('exact engine version')
@@ -34,8 +34,8 @@ def run():
         # community claim that logical dumps cannot be backups.
         dump=call(['docker','exec',name,'pg_dump','-U','postgres','--table=orders','--no-owner','--no-privileges'])
         sql('CREATE DATABASE restored;')
-        call(['docker','exec','-i',name,'psql','-X','-U','postgres','-d','restored','-v','ON_ERROR_STOP=1'],dump)
-        count=call(['docker','exec',name,'psql','-X','-U','postgres','-d','restored','-tAc','SELECT count(*) FROM orders;']).strip()
+        call(['docker','exec','-i',name,'psql','-X','-h','127.0.0.1','-U','postgres','-d','restored','-v','ON_ERROR_STOP=1'],dump)
+        count=call(['docker','exec',name,'psql','-X','-h','127.0.0.1','-U','postgres','-d','restored','-tAc','SELECT count(*) FROM orders;']).strip()
         assert count=='1';cases.append('logical dump restored into independent database')
         rows=json.loads(sql("SELECT json_object_agg(name,setting) FROM pg_settings WHERE name IN ('fsync','full_page_writes','autovacuum','ssl','password_encryption');"))
         roles=json.loads(sql("SELECT json_agg(x) FROM (SELECT rolname,rolsuper,rolbypassrls,rolreplication FROM pg_roles WHERE rolname='app') x;"))
@@ -47,5 +47,13 @@ def run():
                 'expectedSnapshotVerdict':'Fail','limits':'Disposable local trust/no-TLS fixture is deliberately not production compliant. Restore is a tiny logical-backup demonstration, not PITR/HA qualification.'}
 
 
-if __name__=='__main__':
-    result=run();(ROOT/'artifacts/native-results.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+if __name__ == "__main__":
+    if sys.argv[1:3] == ["--profile", "wallet-migration"]:
+        from migration_native import main
+        main(sys.argv[3:])
+    elif len(sys.argv) == 1:
+        result = run()
+        (ROOT / "artifacts/native-results.json").write_text(json.dumps(result, indent=2) + "\n")
+        print(json.dumps(result, indent=2))
+    else:
+        raise SystemExit("unsupported native profile")

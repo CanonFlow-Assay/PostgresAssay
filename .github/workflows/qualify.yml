@@ -19,4 +19,11 @@ jobs:
         with:
           python-version: '3.12'
       - run: docker pull postgres:18.7@sha256:2ea8630df176ad090ec92136dee850397c5af8781e4bcf2e4162593691c61bbc
+      - run: docker pull flyway/flyway:13.12.1@sha256:3b4fae57858ee25735230e42f426fd200144fedbe692ea7789aa3e50a7c11657
       - run: python eng/qualify.py --native
+      - run: python eng/qualify-profile.py --out artifacts/profile-qualification
+      - uses: actions/upload-artifact@v4
+        if: always() && hashFiles('artifacts/profile-qualification/**') != ''
+        with:
+          name: native-profile-evidence
+          path: artifacts/profile-qualification/

@@ -22,6 +22,8 @@ PYTHONPATH=src python3 -m postgres_assay verify examples/snapshot.json --policy 
 
 The example policy deliberately declares no application behavior tests, so its clean snapshot is **Inconclusive**, exit 2. Configure actual required commands and their input files according to the contract; no test is fabricated merely to obtain Pass. `assess` preserves the raw verification receipt inside an additive envelope. `--out PATH` writes a receipt to an existing parent directory.
 
+The [Wallet migration profile](docs/wallet-migration.md) adds six native upgrade and recovery checks.
+
 ## Validate and package
 
 ```sh

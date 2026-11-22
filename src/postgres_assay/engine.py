@@ -67,6 +67,14 @@ def pointer(value, path):
 
 def scalar(value, rule):
     kind = rule["kind"]
+    if kind == "profile":
+        from .profiles import CHECKS
+        if not isinstance(value, dict):
+            raise ValueError("profile observation must be an object")
+        try:
+            return CHECKS[rule["predicate"]](value)
+        except (KeyError, TypeError) as error:
+            raise ValueError("profile observation is incomplete or malformed") from error
     if kind == "boolean":
         if type(value) is not bool:
             raise ValueError("boolean evidence required")
@@ -294,7 +302,7 @@ def main(package):
     catalogue = strict_json(catalogue_bytes)
     def producer_hash():
         return digest(b"".join(package_root.joinpath(name).read_bytes() for name in
-                      ("__init__.py", "__main__.py", "engine.py", "catalogue.json")))
+                      ("__init__.py", "__main__.py", "engine.py", "catalogue.json", "profiles.py")))
     producer = {"name": catalogue["assay"], "version": "0.1.0", "sha256": producer_hash()}
     class Parser(argparse.ArgumentParser):
         def error(self, message):
